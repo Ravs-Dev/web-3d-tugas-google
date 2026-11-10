@@ -213,3 +213,154 @@ button{cursor:pointer}
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
 }
+
+
+/* Cinematic 3D presentation — the supplied GLB is the visual centerpiece. */
+.hero-visual {
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid #29445c;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 51% 40%, #345a78 0%, #203b54 35%, #172b40 66%, #101d2b 100%);
+  box-shadow: 0 28px 70px #1836512b, inset 0 1px 0 #ffffff20;
+}
+.hero-visual:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, #a9dcf814 0 1px, transparent 1px 100%),
+    radial-gradient(circle at 22% 24%, #a0d8ed18, transparent 27%),
+    radial-gradient(circle at 78% 77%, #a5e5d41b, transparent 28%);
+  background-size: 34px 34px, auto, auto;
+  mask-image: linear-gradient(135deg, #000 0%, #0008 52%, transparent 100%);
+}
+.hero-visual:after {
+  content: "RAVS / MOTION";
+  position: absolute;
+  right: 20px;
+  bottom: 17px;
+  z-index: 3;
+  font: 7px var(--mono);
+  letter-spacing: .24em;
+  color: #a7c4d8a8;
+  pointer-events: none;
+}
+.hero-visual .visual-glow {
+  width: 82%;
+  height: 78%;
+  background: radial-gradient(ellipse, #8ccbed55 0%, #5e9fc42c 38%, transparent 72%);
+  filter: blur(31px);
+}
+.hero-visual .visual-orbit {
+  border-color: #a9d5f044;
+}
+.hero-visual .orbit-two {
+  border-color: #a9e8d544;
+}
+.hero-visual .visual-tag {
+  background: #102438b8;
+  border-color: #91b5cf55;
+  color: #c4ddec;
+}
+.hero-visual .tag-dot {
+  box-shadow: 0 0 0 4px #74dfbd20, 0 0 15px #74dfbd;
+}
+.hero-visual .tag-bottom span,
+.hero-visual .visual-index {
+  color: #b1ddf4;
+}
+.hero-visual .visual-cross {
+  color: #a8e5d3;
+  text-shadow: 0 0 14px #83d7c8aa;
+}
+.hero-visual .model-shadow {
+  width: 57%;
+  height: 11%;
+  bottom: 13%;
+  left: 21%;
+  background: #040c16;
+  filter: blur(30px);
+  opacity: .6;
+}
+.model-canvas,
+.three-d-canvas {
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.model-canvas canvas,
+.three-d-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  outline: none;
+}
+.model-canvas.model-ready {
+  filter: drop-shadow(0 20px 28px #07152555);
+}
+.three-d-stage {
+  overflow: hidden;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 48%, #254b69a6, transparent 67%),
+    linear-gradient(145deg, #1b3145, #101e2b 70%);
+  border: 1px solid #405c72;
+  box-shadow: inset 0 1px 0 #ffffff12, 0 24px 64px #07152235;
+}
+.three-d-stage:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(140deg, #a8dff20c, transparent 38%, #8ce2ce0b);
+}
+.three-d-stage .three-d-ring {
+  border-color: #86c9ed58;
+}
+.three-d-stage .ring-front {
+  border-color: #a8e8da56;
+}
+.three-d-corner {
+  padding: 7px 9px;
+  border: 1px solid #91b9d13b;
+  border-radius: 3px;
+  background: #1024389c;
+  color: #c0d8e8;
+}
+.three-d-number {
+  color: #c1e7ff1b;
+}
+.three-d-cross {
+  color: #a3e7d5;
+  text-shadow: 0 0 18px #83d7c866;
+}
+#heroModel.model-unavailable:after,
+#detailModel.model-unavailable:after {
+  content: "3D MODEL COULD NOT BE LOADED";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: 85%;
+  color: #b8d4e6;
+  font: 8px var(--mono);
+  letter-spacing: .12em;
+}
+@media(max-width:760px) {
+  .hero-visual {
+    border-radius: 17px;
+    min-height: 330px;
+  }
+  .hero-visual:after {
+    right: 13px;
+    bottom: 12px;
+    font-size: 6px;
+  }
+  .three-d-stage {
+    border-radius: 17px;
+  }
+}

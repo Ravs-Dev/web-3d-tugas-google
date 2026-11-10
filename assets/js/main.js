@@ -50,6 +50,18 @@ $$('.reveal').forEach((element) => revealObserver.observe(element));
 // Page progress indicator.
 const progress = $('#scrollProgress');
 let scrollTicking = false;
+let heroModel = null;
+let detailModel = null;
+
+function updateModelScrollMotion() {
+  const clamp01 = (value) => Math.max(0, Math.min(1, value));
+  const heroRect = $('#heroVisual').getBoundingClientRect();
+  const detailRect = $('#threeDStage').getBoundingClientRect();
+  const heroProgress = clamp01((window.innerHeight - heroRect.top) / (window.innerHeight + heroRect.height));
+  const detailProgress = clamp01((window.innerHeight - detailRect.top) / (window.innerHeight + detailRect.height));
+  heroModel?.setScrollProgress(heroProgress);
+  detailModel?.setScrollProgress(detailProgress);
+}
 window.addEventListener('scroll', () => {
   if (scrollTicking) return;
   scrollTicking = true;
@@ -57,6 +69,7 @@ window.addEventListener('scroll', () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
     progress.style.width = percent + '%';
+    updateModelScrollMotion();
     scrollTicking = false;
   });
 }, { passive: true });
@@ -165,8 +178,19 @@ animate('.letter', {
 });
 
 // Start the supplied Blender GLB in both 3D feature areas.
-const heroModel = initModel($('#heroModel'), { theme: 'light', autoRotate: true, scale: 1.08 });
-const detailModel = initModel($('#detailModel'), { theme: 'dark', autoRotate: true, scale: 1.32 });
+heroModel = initModel($('#heroModel'), {
+  theme: 'light',
+  autoRotate: true,
+  scale: 1.18,
+  cameraDistance: 4.35
+});
+detailModel = initModel($('#detailModel'), {
+  theme: 'dark',
+  autoRotate: true,
+  scale: 1.34,
+  cameraDistance: 4.55
+});
+updateModelScrollMotion();
 window.addEventListener('beforeunload', () => {
   heroModel?.dispose();
   detailModel?.dispose();

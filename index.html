@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111820">
+  <meta name="description" content="FORM is a browser-based 3D workspace for shaping, importing and animating 3D objects.">
+  <title>FORM — 3D Motion Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="FORM home">
+        <span class="brand-mark">F</span>
+        <span class="brand-copy"><strong>FORM</strong><small>3D MOTION STUDIO</small></span>
+      </a>
+      <div class="project-name"><span class="status-dot"></span><span>Untitled project</span><span class="saved-label">LOCAL SESSION</span></div>
+      <div class="top-actions">
+        <button class="top-button subtle" id="saveButton" title="Download scene settings">Save scene</button>
+        <button class="top-button export-button" id="exportButton"><span>⇧</span> Export GLB</button>
+        <button class="avatar" title="Ravs-Dev">R</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="panel left-panel">
+        <div class="panel-heading">
+          <div><span class="eyebrow">WORKSPACE</span><h2>Scene</h2></div>
+          <button class="icon-button" id="addMenuButton" title="Add object">＋</button>
+        </div>
+        <div class="scene-summary">
+          <div class="scene-thumb"><span class="mini-cube"></span></div>
+          <div><strong>Untitled scene</strong><small id="objectCount">1 object</small></div>
+          <span class="more-dots">•••</span>
+        </div>
+        <div class="section-label">HIERARCHY <span>01</span></div>
+        <div class="scene-tree" id="sceneTree"></div>
+        <div class="left-spacer"></div>
+        <div class="asset-drop-card" id="assetDropCard">
+          <div class="upload-symbol">↑</div>
+          <strong>Bring your own model</strong>
+          <p>Import a .GLB or .GLTF made in Blender.</p>
+          <button class="text-button" id="importButton">Browse files <span>↗</span></button>
+        </div>
+        <div class="panel-foot"><span class="foot-indicator"></span> WEBGL VIEWPORT READY</div>
+      </aside>
+
+      <section class="center-stage">
+        <div class="stage-toolbar">
+          <div class="tool-group">
+            <button class="tool-button active" data-tool="translate" title="Move (W)">↔<span>Move</span></button>
+            <button class="tool-button" data-tool="rotate" title="Rotate (E)">⟳<span>Rotate</span></button>
+            <button class="tool-button" data-tool="scale" title="Scale (R)">⤢<span>Scale</span></button>
+          </div>
+          <div class="stage-divider"></div>
+          <div class="tool-group compact-tools">
+            <button class="square-tool active" id="gridButton" title="Toggle grid">▦</button>
+            <button class="square-tool" id="axesButton" title="Toggle axes">⌖</button>
+            <button class="square-tool" id="wireButton" title="Toggle wireframe">◇</button>
+          </div>
+          <div class="stage-spacer"></div>
+          <span class="viewport-label"><i></i> PERSPECTIVE</span>
+          <button class="square-tool" id="frameButton" title="Frame selected object">⌗</button>
+          <button class="square-tool" id="resetViewButton" title="Reset camera">⤾</button>
+        </div>
+
+        <div class="viewport" id="viewport">
+          <div class="viewport-backdrop"></div>
+          <div class="viewport-caption"><span>01 / VIEWPORT</span><span>DRAG TO ORBIT&nbsp;&nbsp; · &nbsp;&nbsp;SCROLL TO ZOOM</span></div>
+          <div id="canvasMount"></div>
+          <div class="drop-overlay" id="dropOverlay"><div class="drop-icon">＋</div><strong>Drop your 3D model</strong><span>GLB and glTF files are supported</span></div>
+          <div class="viewport-bottom-left"><span class="axis-chip">X <b>RED</b></span><span class="axis-chip">Y <b>GREEN</b></span><span class="axis-chip">Z <b>BLUE</b></span></div>
+          <div class="viewport-bottom-right" id="renderStats">60 FPS <span>•</span> REALTIME</div>
+          <div class="floating-hint" id="floatingHint">Select an object to inspect it</div>
+        </div>
+
+        <section class="timeline-panel">
+          <div class="timeline-head">
+            <div class="timeline-title"><span class="eyebrow">MOTION</span><h3>Timeline</h3></div>
+            <div class="playback-controls">
+              <button class="play-small" id="goStartButton" title="Go to start">|◀</button>
+              <button class="play-button" id="playButton" title="Play animation">▶</button>
+              <button class="play-small" id="goEndButton" title="Go to end">▶|</button>
+              <span class="time-readout" id="timeReadout">00:00.00</span>
+            </div>
+            <div class="timeline-actions"><button class="small-action" id="addKeyButton">＋ Add keyframe</button></div>
+          </div>
+          <div class="timeline-body">
+            <div class="track-labels"><div class="track-label-head">TRACKS</div><div class="track-label-row"><span class="track-color"></span> Object transform</div></div>
+            <div class="track-area">
+              <div class="ruler" id="timeRuler"><span>0s</span><span>2s</span><span>4s</span><span>6s</span><span>8s</span><span>10s</span></div>
+              <div class="track-lane" id="trackLane">
+                <div class="track-fill"></div>
+                <div class="playhead" id="playhead"><span></span></div>
+                <div class="keyframe-markers" id="keyframeMarkers"></div>
+                <input type="range" min="0" max="10" step="0.01" value="0" id="timelineScrubber" aria-label="Timeline position">
+              </div>
+            </div>
+          </div>
+          <div class="timeline-foot"><span><kbd>Space</kbd> Play / pause</span><span><kbd>W</kbd> Move <kbd>E</kbd> Rotate <kbd>R</kbd> Scale</span><span id="keyCount">0 KEYFRAMES</span></div>
+        </section>
+      </section>
+
+      <aside class="panel right-panel">
+        <div class="inspector-heading"><div><span class="eyebrow">PROPERTIES</span><h2>Inspector</h2></div><button class="icon-button" id="resetObjectButton" title="Reset object">↺</button></div>
+        <div class="inspector-tabs"><button class="inspector-tab active" data-tab="object">Object</button><button class="inspector-tab" data-tab="material">Material</button></div>
+        <div id="objectTab" class="inspector-content"></div>
+        <div id="materialTab" class="inspector-content hidden"></div>
+        <div class="inspector-bottom">
+          <div class="tip-icon">✳</div><div><strong>Make it move.</strong><p>Add keyframes to turn your object into an animation.</p></div>
+        </div>
+      </aside>
+    </main>
+    <input type="file" id="modelInput" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" hidden>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+  <script type="module" src="./assets/js/main.js"></script>
+</body>
+</html>

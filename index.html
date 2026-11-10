@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111820">
-  <meta name="description" content="FORM is a browser-based 3D workspace for shaping, importing and animating 3D objects.">
-  <title>FORM — 3D Motion Studio</title>
+  <meta name="theme-color" content="#f6f8fb">
+  <meta name="description" content="RAVS Motion — an interactive playground for expressive web animation, motion experiments and 3D visuals.">
+  <title>RAVS Motion — Make the web move</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/style.css">
   <script type="importmap">
     {
       "imports": {
@@ -18,114 +17,232 @@
       }
     }
   </script>
+  <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="./" aria-label="FORM home">
-        <span class="brand-mark">F</span>
-        <span class="brand-copy"><strong>FORM</strong><small>3D MOTION STUDIO</small></span>
-      </a>
-      <div class="project-name"><span class="status-dot"></span><span>Untitled project</span><span class="saved-label">LOCAL SESSION</span></div>
-      <div class="top-actions">
-        <button class="top-button subtle" id="saveButton" title="Download scene settings">Save scene</button>
-        <button class="top-button export-button" id="exportButton"><span>⇧</span> Export GLB</button>
-        <button class="avatar" title="Ravs-Dev">R</button>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="RAVS Motion home">
+      <span class="wordmark-symbol">R</span>
+      <span>RAVS<span class="wordmark-light">MOTION</span></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+      <a class="nav-link active" href="#playground">Playground</a>
+      <a class="nav-link" href="#toolkit">Toolkit</a>
+      <a class="nav-link" href="#three-d">3D Lab</a>
+      <a class="nav-link" href="#about">About</a>
+    </nav>
+    <div class="header-actions">
+      <a class="github-link" href="https://github.com/Ravs-Dev/web-3d-tugas-google" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+      <a class="header-cta" href="#playground">Explore motion <span>↗</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero section-wrap">
+      <div class="hero-copy">
+        <div class="eyebrow hero-eyebrow"><span class="live-pulse"></span> CREATIVE WEB MOTION EXPERIMENTS <span class="eyebrow-index">NO. 001</span></div>
+        <h1 class="hero-title">
+          Make the web<br>
+          <span class="title-line-two"><span class="title-accent">move</span><span class="title-period">.</span> <span class="title-outline">with feeling.</span></span>
+        </h1>
+        <p class="hero-description">A playground for motion, interaction and expressive digital experiences. Built to make every little detail feel alive.</p>
+        <div class="hero-buttons">
+          <a class="button button-dark" href="#playground">Explore the playground <span>↘</span></a>
+          <a class="button button-text" href="#toolkit">Discover the toolkit <span>↗</span></a>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-item"><span class="meta-number">01</span><span>SCROLL TO EXPLORE</span></div>
+          <div class="meta-line"></div>
+          <div class="meta-item"><span class="meta-dot"></span><span>DESIGNED & BUILT BY RAVS-DEV</span></div>
+        </div>
       </div>
-    </header>
 
-    <main class="workspace">
-      <aside class="panel left-panel">
-        <div class="panel-heading">
-          <div><span class="eyebrow">WORKSPACE</span><h2>Scene</h2></div>
-          <button class="icon-button" id="addMenuButton" title="Add object">＋</button>
-        </div>
-        <div class="scene-summary">
-          <div class="scene-thumb"><span class="mini-cube"></span></div>
-          <div><strong>Untitled scene</strong><small id="objectCount">1 object</small></div>
-          <span class="more-dots">•••</span>
-        </div>
-        <div class="section-label">HIERARCHY <span>01</span></div>
-        <div class="scene-tree" id="sceneTree"></div>
-        <div class="left-spacer"></div>
-        <div class="asset-drop-card" id="assetDropCard">
-          <div class="upload-symbol">↑</div>
-          <strong>Bring your own model</strong>
-          <p>Import a .GLB or .GLTF made in Blender.</p>
-          <button class="text-button" id="importButton">Browse files <span>↗</span></button>
-        </div>
-        <div class="panel-foot"><span class="foot-indicator"></span> WEBGL VIEWPORT READY</div>
-      </aside>
+      <div class="hero-visual" id="heroVisual">
+        <div class="visual-orbit orbit-one"></div>
+        <div class="visual-orbit orbit-two"></div>
+        <div class="visual-glow"></div>
+        <div class="visual-tag tag-top"><span class="tag-dot"></span> LIVE OBJECT / 3D</div>
+        <div class="visual-tag tag-bottom">DRAG TO ROTATE <span>↗</span></div>
+        <div class="model-shadow"></div>
+        <div class="model-canvas" id="heroModel"></div>
+        <div class="visual-cross cross-one">+</div>
+        <div class="visual-cross cross-two">+</div>
+        <div class="visual-index">G<span> / 01</span></div>
+      </div>
+      <div class="hero-side-note">MOTION IS A<br>LANGUAGE OF ITS OWN.</div>
+    </section>
 
-      <section class="center-stage">
-        <div class="stage-toolbar">
-          <div class="tool-group">
-            <button class="tool-button active" data-tool="translate" title="Move (W)">↔<span>Move</span></button>
-            <button class="tool-button" data-tool="rotate" title="Rotate (E)">⟳<span>Rotate</span></button>
-            <button class="tool-button" data-tool="scale" title="Scale (R)">⤢<span>Scale</span></button>
+    <section class="marquee-band" aria-label="Motion capabilities">
+      <div class="marquee-track">
+        <div class="marquee-content">
+          <span>ANIMATION</span><i>✳</i><span>INTERACTION</span><i>✳</i><span>SCROLL MOTION</span><i>✳</i><span>3D EXPERIMENTS</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i>
+          <span>ANIMATION</span><i>✳</i><span>INTERACTION</span><i>✳</i><span>SCROLL MOTION</span><i>✳</i><span>3D EXPERIMENTS</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i>
+        </div>
+      </div>
+    </section>
+
+    <section class="playground section-wrap" id="playground">
+      <div class="section-heading reveal">
+        <div class="section-kicker"><span>01 / PLAYGROUND</span><span class="kicker-line"></span><span>TRY IT YOURSELF</span></div>
+        <div class="heading-row">
+          <h2>Small interactions.<br><em>Big personality.</em></h2>
+          <p>Motion is more than movement. Play with the details and see how a little animation can change the whole feeling.</p>
+        </div>
+      </div>
+
+      <div class="demo-grid">
+        <article class="demo-card demo-card-hover reveal">
+          <div class="demo-card-head"><span>01 — HOVER RESPONSE</span><span class="demo-status">INTERACTIVE <i></i></span></div>
+          <div class="hover-demo-area">
+            <div class="hover-orbit hover-orbit-a"></div>
+            <div class="hover-orbit hover-orbit-b"></div>
+            <button class="hover-object" id="hoverObject" aria-label="Hover over this shape">
+              <span class="hover-object-inner">R</span>
+              <span class="hover-spark spark-a">✳</span><span class="hover-spark spark-b">✳</span>
+            </button>
+            <span class="hover-hint">HOVER / MOVE</span>
           </div>
-          <div class="stage-divider"></div>
-          <div class="tool-group compact-tools">
-            <button class="square-tool active" id="gridButton" title="Toggle grid">▦</button>
-            <button class="square-tool" id="axesButton" title="Toggle axes">⌖</button>
-            <button class="square-tool" id="wireButton" title="Toggle wireframe">◇</button>
+          <div class="demo-card-foot"><div><h3>Feel the response.</h3><p>Spring-like movement that reacts to your cursor.</p></div><span class="demo-arrow">↗</span></div>
+        </article>
+
+        <article class="demo-card demo-card-stagger reveal">
+          <div class="demo-card-head"><span>02 — STAGGER PLAY</span><span class="demo-status">CLICK TO PLAY <i></i></span></div>
+          <div class="stagger-demo-area">
+            <div class="stagger-grid" id="staggerGrid" aria-label="Staggered animation demo"></div>
+            <button class="replay-button" id="staggerReplay"><span>↻</span> Replay sequence</button>
           </div>
-          <div class="stage-spacer"></div>
-          <span class="viewport-label"><i></i> PERSPECTIVE</span>
-          <button class="square-tool" id="frameButton" title="Frame selected object">⌗</button>
-          <button class="square-tool" id="resetViewButton" title="Reset camera">⤾</button>
-        </div>
+          <div class="demo-card-foot"><div><h3>One after another.</h3><p>A cascade of elements, timed to feel just right.</p></div><span class="demo-arrow">↗</span></div>
+        </article>
 
-        <div class="viewport" id="viewport">
-          <div class="viewport-backdrop"></div>
-          <div class="viewport-caption"><span>01 / VIEWPORT</span><span>DRAG TO ORBIT&nbsp;&nbsp; · &nbsp;&nbsp;SCROLL TO ZOOM</span></div>
-          <div id="canvasMount"></div>
-          <div class="drop-overlay" id="dropOverlay"><div class="drop-icon">＋</div><strong>Drop your 3D model</strong><span>GLB and glTF files are supported</span></div>
-          <div class="viewport-bottom-left"><span class="axis-chip">X <b>RED</b></span><span class="axis-chip">Y <b>GREEN</b></span><span class="axis-chip">Z <b>BLUE</b></span></div>
-          <div class="viewport-bottom-right" id="renderStats">60 FPS <span>•</span> REALTIME</div>
-          <div class="floating-hint" id="floatingHint">Select an object to inspect it</div>
-        </div>
-
-        <section class="timeline-panel">
-          <div class="timeline-head">
-            <div class="timeline-title"><span class="eyebrow">MOTION</span><h3>Timeline</h3></div>
-            <div class="playback-controls">
-              <button class="play-small" id="goStartButton" title="Go to start">|◀</button>
-              <button class="play-button" id="playButton" title="Play animation">▶</button>
-              <button class="play-small" id="goEndButton" title="Go to end">▶|</button>
-              <span class="time-readout" id="timeReadout">00:00.00</span>
+        <article class="demo-card demo-card-ease reveal">
+          <div class="demo-card-head"><span>03 — EASING CURVE</span><span class="demo-status">MOVE THE SLIDER <i></i></span></div>
+          <div class="ease-demo-area">
+            <div class="ease-stage">
+              <div class="ease-track"><span class="ease-start">0</span><span class="ease-end">100</span></div>
+              <div class="ease-ball" id="easeBall"></div>
+              <div class="ease-label">OUT EXPO</div>
             </div>
-            <div class="timeline-actions"><button class="small-action" id="addKeyButton">＋ Add keyframe</button></div>
-          </div>
-          <div class="timeline-body">
-            <div class="track-labels"><div class="track-label-head">TRACKS</div><div class="track-label-row"><span class="track-color"></span> Object transform</div></div>
-            <div class="track-area">
-              <div class="ruler" id="timeRuler"><span>0s</span><span>2s</span><span>4s</span><span>6s</span><span>8s</span><span>10s</span></div>
-              <div class="track-lane" id="trackLane">
-                <div class="track-fill"></div>
-                <div class="playhead" id="playhead"><span></span></div>
-                <div class="keyframe-markers" id="keyframeMarkers"></div>
-                <input type="range" min="0" max="10" step="0.01" value="0" id="timelineScrubber" aria-label="Timeline position">
-              </div>
+            <div class="ease-controls">
+              <input type="range" min="0" max="100" value="0" id="easeSlider" aria-label="Move the animated object">
+              <button class="ease-play" id="easePlay" aria-label="Play easing animation">▶</button>
             </div>
           </div>
-          <div class="timeline-foot"><span><kbd>Space</kbd> Play / pause</span><span><kbd>W</kbd> Move <kbd>E</kbd> Rotate <kbd>R</kbd> Scale</span><span id="keyCount">0 KEYFRAMES</span></div>
-        </section>
-      </section>
+          <div class="demo-card-foot"><div><h3>Timing is everything.</h3><p>Explore how easing shapes the character of motion.</p></div><span class="demo-arrow">↗</span></div>
+        </article>
+      </div>
+    </section>
 
-      <aside class="panel right-panel">
-        <div class="inspector-heading"><div><span class="eyebrow">PROPERTIES</span><h2>Inspector</h2></div><button class="icon-button" id="resetObjectButton" title="Reset object">↺</button></div>
-        <div class="inspector-tabs"><button class="inspector-tab active" data-tab="object">Object</button><button class="inspector-tab" data-tab="material">Material</button></div>
-        <div id="objectTab" class="inspector-content"></div>
-        <div id="materialTab" class="inspector-content hidden"></div>
-        <div class="inspector-bottom">
-          <div class="tip-icon">✳</div><div><strong>Make it move.</strong><p>Add keyframes to turn your object into an animation.</p></div>
+    <section class="statement-band">
+      <div class="statement-inner reveal">
+        <span class="statement-mark">“</span>
+        <p>Good motion doesn't ask<br>for attention. <em>It earns it.</em></p>
+        <span class="statement-credit">A NOTE ON DIGITAL CRAFT — RAVS-DEV</span>
+      </div>
+      <div class="statement-decoration">R / M</div>
+    </section>
+
+    <section class="toolkit section-wrap" id="toolkit">
+      <div class="section-heading reveal">
+        <div class="section-kicker"><span>02 / THE TOOLKIT</span><span class="kicker-line"></span><span>BUILT FOR EXPRESSION</span></div>
+        <div class="heading-row">
+          <h2>Everything has<br><em>a rhythm.</em></h2>
+          <p>From one simple transition to a whole sequence, explore a flexible set of motion ideas for the modern web.</p>
         </div>
-      </aside>
-    </main>
-    <input type="file" id="modelInput" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" hidden>
-    <div class="toast" id="toast" role="status"></div>
-  </div>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card feature-blue reveal">
+          <div class="feature-top"><span>01</span><span class="feature-symbol">↗</span></div>
+          <div class="feature-visual animation-visual"><div class="animation-square"></div><div class="animation-circle"></div><div class="animation-cross">✳</div></div>
+          <h3>Expressive animation</h3><p>Give interfaces a pulse with smooth, expressive transitions and playful details.</p>
+          <span class="feature-caption">TWEEN / KEYFRAMES / EASING</span>
+        </article>
+        <article class="feature-card feature-lilac reveal">
+          <div class="feature-top"><span>02</span><span class="feature-symbol">⌁</span></div>
+          <div class="feature-visual timeline-visual"><div class="timeline-bars"><i></i><i></i><i></i><i></i><i></i></div><div class="timeline-playhead"></div></div>
+          <h3>Sequenced timelines</h3><p>Bring multiple moments together into one thoughtful, connected sequence.</p>
+          <span class="feature-caption">SYNC / SEQUENCE / CONTROL</span>
+        </article>
+        <article class="feature-card feature-mint reveal">
+          <div class="feature-top"><span>03</span><span class="feature-symbol">⌖</span></div>
+          <div class="feature-visual scroll-visual"><div class="scroll-window"><div class="scroll-window-line"></div><div class="scroll-window-dot"></div><div class="scroll-window-block"></div></div><div class="scroll-progress-mini"></div></div>
+          <h3>Scroll storytelling</h3><p>Let the page respond as people explore, discover and move through content.</p>
+          <span class="feature-caption">SCROLL / REVEAL / PROGRESS</span>
+        </article>
+        <article class="feature-card feature-yellow reveal">
+          <div class="feature-top"><span>04</span><span class="feature-symbol">✳</span></div>
+          <div class="feature-visual svg-visual"><svg viewBox="0 0 220 110" role="img" aria-label="Animated flowing path"><path class="svg-path" d="M12 80 C 45 4, 73 4, 108 55 S 170 106, 208 26"/><circle class="svg-path-dot" cx="12" cy="80" r="6"/></svg><span class="svg-orbit"></span></div>
+          <h3>Shape & motion</h3><p>Mix geometry, paths and 3D visuals to create a little unexpected magic.</p>
+          <span class="feature-caption">SVG / SHAPES / 3D</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="three-d-section" id="three-d">
+      <div class="three-d-noise"></div>
+      <div class="three-d-inner section-wrap">
+        <div class="three-d-copy reveal">
+          <div class="section-kicker section-kicker-light"><span>03 / 3D LAB</span><span class="kicker-line"></span><span>REAL MODEL / REAL TIME</span></div>
+          <span class="big-index">01</span>
+          <h2>A little<br><em>more depth.</em></h2>
+          <p>Not everything has to live on a flat screen. This 3D object was modelled in Blender, exported as GLB, and brought to life right here in the browser.</p>
+          <div class="three-d-tags"><span>BLENDER → GLB</span><span>THREE.JS</span><span>INTERACTIVE</span></div>
+          <a class="button button-light" href="#about">Explore the project <span>↘</span></a>
+        </div>
+        <div class="three-d-stage reveal" id="threeDStage">
+          <div class="three-d-ring ring-back"></div><div class="three-d-ring ring-front"></div>
+          <div class="three-d-canvas" id="detailModel"></div>
+          <div class="three-d-cross">✳</div>
+          <div class="three-d-corner corner-a">MODEL / GOOGLE G</div>
+          <div class="three-d-corner corner-b">360° INTERACTIVE VIEW</div>
+          <div class="three-d-number">G.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="code-section section-wrap">
+      <div class="code-copy reveal">
+        <div class="section-kicker"><span>04 / UNDER THE HOOD</span><span class="kicker-line"></span><span>LESS CODE / MORE FEELING</span></div>
+        <h2>Simple to start.<br><em>Fun to explore.</em></h2>
+        <p>RAVS Motion uses Anime.js for expressive browser animation, with Three.js bringing the supplied GLB model into the scene.</p>
+        <a class="text-link" href="https://animejs.com/documentation/" target="_blank" rel="noreferrer">Read Anime.js documentation <span>↗</span></a>
+      </div>
+      <div class="code-window reveal">
+        <div class="code-window-top"><div class="window-dots"><i></i><i></i><i></i></div><span>motion.js</span><button id="copyCode">COPY CODE <span>↗</span></button></div>
+        <pre><code><span class="code-purple">import</span> { <span class="code-blue">animate</span>, <span class="code-blue">stagger</span> } <span class="code-purple">from</span> <span class="code-green">'animejs'</span>;
+
+<span class="code-comment">// Let every element arrive in its own time.</span>
+<span class="code-blue">animate</span>(<span class="code-green">'.letter'</span>, {
+  <span class="code-cyan">y</span>: [<span class="code-orange">32</span>, <span class="code-orange">0</span>],
+  <span class="code-cyan">opacity</span>: [<span class="code-orange">0</span>, <span class="code-orange">1</span>],
+  <span class="code-cyan">delay</span>: <span class="code-blue">stagger</span>(<span class="code-orange">80</span>),
+  <span class="code-cyan">ease</span>: <span class="code-green">'outExpo'</span>,
+  <span class="code-cyan">duration</span>: <span class="code-orange">900</span>,
+});</code></pre>
+        <div class="code-window-foot"><span><i></i> ANIME.JS / V4</span><span>ES MODULE</span></div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="about">
+      <div class="cta-orb"></div>
+      <div class="final-cta-content reveal">
+        <span class="cta-kicker">RAVS-DEV / CREATIVE EXPERIMENTS</span>
+        <h2>Make something<br><em>that moves you.</em></h2>
+        <p>Keep exploring. Keep experimenting. The web is your canvas.</p>
+        <a class="button button-light" href="https://github.com/Ravs-Dev/web-3d-tugas-google" target="_blank" rel="noreferrer">Explore on GitHub <span>↗</span></a>
+      </div>
+      <div class="cta-side-label">END OF PAGE — KEEP MOVING</div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="wordmark footer-wordmark" href="#top"><span class="wordmark-symbol">R</span><span>RAVS<span class="wordmark-light">MOTION</span></span></a>
+    <span>AN EXPERIMENT BY RAVS-DEV · 2026</span>
+    <a href="#top" class="back-top">BACK TO TOP ↑</a>
+  </footer>
+  <div class="toast" id="toast" role="status"></div>
   <script type="module" src="./assets/js/main.js"></script>
 </body>
 </html>

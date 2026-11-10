@@ -181,14 +181,14 @@ animate('.letter', {
 heroModel = initModel($('#heroModel'), {
   theme: 'light',
   autoRotate: true,
-  scale: 1.18,
-  cameraDistance: 4.35
+  radius: 1.12,
+  cameraDistance: 5.15
 });
 detailModel = initModel($('#detailModel'), {
   theme: 'dark',
   autoRotate: true,
-  scale: 1.34,
-  cameraDistance: 4.55
+  radius: 1.22,
+  cameraDistance: 5.35
 });
 updateModelScrollMotion();
 window.addEventListener('beforeunload', () => {

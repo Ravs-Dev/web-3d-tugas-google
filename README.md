@@ -6,8 +6,6 @@ A browser-based 3D playground built with Three.js. Create simple primitives, imp
 
 Because the app uses JavaScript modules, serve the folder through a local HTTP server (do not open `index.html` directly).
 
-Examples:
-
 ```bash
 python -m http.server 8000
 ```
@@ -34,11 +32,17 @@ Then open http://localhost:8000.
 
 For best browser performance, keep textures reasonably sized and apply transforms before export when practical.
 
+## Deploy to GitHub Pages
+
+The repository includes a GitHub Actions workflow. Enable Pages once before the first deployment:
+
+1. Open the repository's **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Open the **Actions** tab and re-run **Deploy FORM 3D Studio to GitHub Pages**, or push another commit to `main`.
+
+After a successful run, GitHub will show the published site URL in the deployment job and under **Settings → Pages**.
+
 ## Technology
 
 - [Three.js](https://threejs.org/) for real-time 3D rendering and GLB loading/export.
 - Vanilla HTML, CSS and JavaScript; no build step required.
-
-## Deploy
-
-The repository includes a GitHub Pages workflow. Enable **Settings → Pages → Build and deployment → GitHub Actions** if it is not already selected.

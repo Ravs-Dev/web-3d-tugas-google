@@ -624,19 +624,28 @@ updateTimelineUI();
 // repository lightweight. It is decompressed in-browser before GLTFLoader parses it.
 async function loadDefaultModel() {
   try {
-    const response = await fetch('./assets/models/google.glb.gz');
-    if (!response.ok) throw new Error('Model request returned ' + response.status);
+    const parts = await Promise.all(
+      Array.from({ length: 4 }, (_, index) =>
+        fetch('./assets/models/google-part-' + String(index + 1).padStart(2, '0') + '.txt')
+          .then((response) => {
+            if (!response.ok) throw new Error('Model part ' + (index + 1) + ' returned ' + response.status);
+            return response.text();
+          })
+      )
+    );
     if (typeof DecompressionStream === 'undefined') {
       throw new Error('This browser does not support gzip decompression streams.');
     }
-    const compressed = await response.arrayBuffer();
+    const compressedBase64 = parts.join('').trim();
+    const binaryString = atob(compressedBase64);
+    const compressed = Uint8Array.from(binaryString, (character) => character.charCodeAt(0));
     const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
     const glbBuffer = await new Response(stream).arrayBuffer();
     loader.parse(glbBuffer, '', (gltf) => {
       while (assetRoot.children.length) {
         const child = assetRoot.children[0];
         assetRoot.remove(child);
-        if (child !== demo) disposeObject(child);
+        disposeObject(child);
       }
       const model = gltf.scene || gltf.scenes[0];
       model.name = 'Google G';
@@ -644,6 +653,7 @@ async function loadDefaultModel() {
         if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
+          if (!child.geometry.attributes.normal) child.geometry.computeVertexNormals();
           if (child.material) {
             const materials = Array.isArray(child.material) ? child.material : [child.material];
             materials.forEach((material) => { material.needsUpdate = true; });

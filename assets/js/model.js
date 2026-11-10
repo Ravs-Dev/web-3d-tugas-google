@@ -215,7 +215,9 @@ export function initModel(container, options = {}) {
 
       const fittedRoot = new THREE.Group();
       fittedRoot.add(source);
-      source.position.sub(centre);
+      // Offset the wrapper in its own parent space. Do not rewrite the
+      // Blender root transform: it contains the model's real orientation/scale.
+      fittedRoot.position.copy(centre).multiplyScalar(-fitScale);
       fittedRoot.scale.setScalar(fitScale);
       modelRoot = fittedRoot;
       objectGroup.add(modelRoot);

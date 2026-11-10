@@ -364,3 +364,49 @@ button{cursor:pointer}
     border-radius: 17px;
   }
 }
+
+
+/* Real Blender model loading state and visible fallback. */
+#heroModel,
+#detailModel {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+#heroModel.model-loading:before,
+#detailModel.model-loading:before {
+  content: "LOADING 3D MODEL";
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 11px;
+  border: 1px solid #91b5cf55;
+  border-radius: 3px;
+  background: #102438b8;
+  color: #c4ddec;
+  font: 8px var(--mono);
+  letter-spacing: .14em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+#heroModel.model-error:after,
+#detailModel.model-error:after {
+  content: "3D MODEL FAILED TO LOAD — CHECK CONNECTION";
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 9px 12px;
+  border: 1px solid #e5a8a855;
+  border-radius: 3px;
+  background: #102438e8;
+  color: #ffe0d5;
+  font: 8px var(--mono);
+  letter-spacing: .08em;
+  white-space: nowrap;
+  max-width: 90%;
+  text-align: center;
+}

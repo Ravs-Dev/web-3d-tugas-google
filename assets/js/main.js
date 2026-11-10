@@ -619,3 +619,49 @@ assetRoot.add(demo);
 selectObject(demo);
 renderSceneTree();
 updateTimelineUI();
+
+// The supplied Blender model is stored as gzip-compressed GLB to keep the
+// repository lightweight. It is decompressed in-browser before GLTFLoader parses it.
+async function loadDefaultModel() {
+  try {
+    const response = await fetch('./assets/models/google.glb.gz');
+    if (!response.ok) throw new Error('Model request returned ' + response.status);
+    if (typeof DecompressionStream === 'undefined') {
+      throw new Error('This browser does not support gzip decompression streams.');
+    }
+    const compressed = await response.arrayBuffer();
+    const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const glbBuffer = await new Response(stream).arrayBuffer();
+    loader.parse(glbBuffer, '', (gltf) => {
+      while (assetRoot.children.length) {
+        const child = assetRoot.children[0];
+        assetRoot.remove(child);
+        if (child !== demo) disposeObject(child);
+      }
+      const model = gltf.scene || gltf.scenes[0];
+      model.name = 'Google G';
+      model.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+          if (child.material) {
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            materials.forEach((material) => { material.needsUpdate = true; });
+          }
+        }
+      });
+      assetRoot.add(model);
+      selectObject(model);
+      frameSelected();
+      renderSceneTree();
+      toast('Your Google 3D model is ready');
+    }, (error) => {
+      console.error('Default GLB parse error:', error);
+      toast('The supplied model could not be loaded');
+    });
+  } catch (error) {
+    console.error('Default GLB load error:', error);
+    toast('Could not load the supplied model: ' + error.message);
+  }
+}
+loadDefaultModel();

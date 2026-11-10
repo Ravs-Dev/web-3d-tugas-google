@@ -1,48 +1,44 @@
-# FORM — 3D Motion Studio
+# RAVS Motion
 
-A browser-based 3D playground built with Three.js. Create simple primitives, import Blender exports in **.glb / .gltf**, adjust transforms and materials, animate with a keyframe timeline, and export the scene as a binary GLB.
+RAVS Motion is an interactive motion-design showcase by RAVS-DEV, inspired by the feel of Anime.js. It is a creative landing page and motion playground — **not a 3D modelling editor**.
+
+## Experience
+
+- Animated hero typography and sequenced intro.
+- Smooth scroll reveals, page progress and responsive navigation.
+- Interactive hover response, stagger animation and easing playground.
+- Motion showcase cards for timelines, SVG, scroll storytelling and 3D.
+- Two real-time Three.js scenes using the latest supplied Blender Google G model.
+- Drag-to-rotate, automatic rotation, pointer parallax and scroll-driven 3D motion.
+- Cinematic lighting, orbit rings, floating particles and a small 3D display platform.
+- Copyable Anime.js v4 example.
+- Responsive layouts and reduced-motion support.
 
 ## Run locally
 
-Because the app uses JavaScript modules, serve the folder through a local HTTP server (do not open `index.html` directly).
+Serve the project through an HTTP server because it uses ES modules and fetches the compressed GLB parts.
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open http://localhost:8000.
+Open http://localhost:8000.
 
-## Main features
+## 3D model
 
-- Three.js viewport with orbit, zoom, pan, grid and axes.
-- Primitive creation: box, sphere, torus and cylinder.
-- GLB / glTF import through the file picker or drag-and-drop.
-- Translate, rotate and scale gizmos.
-- Object inspector and basic material controls.
-- Keyframe timeline with playback and scrubbing.
-- Export the current scene assets to `.glb`.
-- Responsive layout for desktop and smaller screens.
+The latest `google.glb` was centered and optimized while preserving its four coloured mesh parts and their materials. Its gzip-compressed bytes are base64-encoded into six text fragments in `assets/models/google-v2-part-01.txt` through `google-v2-part-06.txt`.
 
-## Importing a Blender model
+The viewer joins the fragments, decompresses the model in the browser, and loads it with Three.js GLTFLoader. The original uploaded Blender file is not overwritten.
 
-1. In Blender, use **File → Export → glTF 2.0**.
-2. Choose **glTF Binary (.glb)** for a single-file model.
-3. In FORM, select **Import GLB** or drop the file onto the viewport.
-4. Select the imported object in the Scene panel to edit its transforms.
+To replace the model later, export a new binary GLB, gzip it, base64-encode the compressed bytes, split the text into six sequential files, and update the part count in `assets/js/model.js` when needed.
 
-For best browser performance, keep textures reasonably sized and apply transforms before export when practical.
+## Stack
 
-## Deploy to GitHub Pages
+- Anime.js v4 via jsDelivr ESM for web motion.
+- Three.js for real-time 3D rendering.
+- GLTFLoader for loading the supplied GLB.
+- Vanilla HTML, CSS and JavaScript modules.
 
-The repository includes a GitHub Actions workflow. Enable Pages once before the first deployment:
+## GitHub Pages
 
-1. Open the repository's **Settings → Pages**.
-2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-3. Open the **Actions** tab and re-run **Deploy FORM 3D Studio to GitHub Pages**, or push another commit to `main`.
-
-After a successful run, GitHub will show the published site URL in the deployment job and under **Settings → Pages**.
-
-## Technology
-
-- [Three.js](https://threejs.org/) for real-time 3D rendering and GLB loading/export.
-- Vanilla HTML, CSS and JavaScript; no build step required.
+The workflow is included at `.github/workflows/deploy.yml`. In repository Settings → Pages, choose **GitHub Actions** as the source for deployment.

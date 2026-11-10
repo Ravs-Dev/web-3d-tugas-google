@@ -90,7 +90,7 @@ export function initModel(container, options = {}) {
     new THREE.CylinderGeometry(1.08, 1.18, 0.105, 96),
     pedestalMaterial
   );
-  base.position.y = -1.34;
+  base.position.y = -radius - 0.12;
   base.castShadow = true;
   base.receiveShadow = true;
   pedestal.add(base);
@@ -104,7 +104,7 @@ export function initModel(container, options = {}) {
     })
   );
   baseTrim.rotation.x = Math.PI / 2;
-  baseTrim.position.y = -1.285;
+  baseTrim.position.y = -radius - 0.065;
   pedestal.add(baseTrim);
 
   const floor = new THREE.Mesh(
@@ -112,7 +112,7 @@ export function initModel(container, options = {}) {
     new THREE.ShadowMaterial({ opacity: dark ? 0.23 : 0.14 })
   );
   floor.rotation.x = -Math.PI / 2;
-  floor.position.y = -1.405;
+  floor.position.y = -radius - 0.175;
   floor.receiveShadow = true;
   scene.add(floor);
 

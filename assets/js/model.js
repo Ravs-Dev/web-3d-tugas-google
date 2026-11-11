@@ -16,7 +16,7 @@ export function initModel(container, options = {}) {
 
   let disposed = false;
   let modelRoot = null;
-  let modelBasePosition = new THREE.Vector3();
+  let modelBasePosition = new THREE.Vector3(0, 0, 0);
   let modelFitScale = 1;
   let fittedCameraDistance = cameraDistance;
   let frameId = 0;
@@ -50,6 +50,7 @@ export function initModel(container, options = {}) {
   renderer.domElement.setAttribute('aria-label', 'Interactive 3D Google G model');
   container.appendChild(renderer.domElement);
   container.classList.add('model-loading');
+  container.dataset.modelState = 'loading';
 
   // Soft studio lighting keeps the original Google colours intact.
   scene.add(new THREE.HemisphereLight(0xf7fbff, dark ? 0x142538 : 0x829db2, 1.9));
@@ -193,6 +194,8 @@ export function initModel(container, options = {}) {
     container.classList.remove('model-loading');
     container.classList.add('model-error');
     container.dataset.modelError = 'true';
+    container.dataset.modelState = 'error';
+    container.dataset.modelErrorMessage = String(error?.message || error || 'Unknown GLB error');
   }
 
   const loader = new GLTFLoader();
@@ -216,13 +219,19 @@ export function initModel(container, options = {}) {
       const sphere = bounds.getBoundingSphere(new THREE.Sphere());
       const fitScale = radius / Math.max(sphere.radius, 0.001);
 
+      // Keep the rotation pivot at the world origin. The centering offset
+      // belongs to a child group, otherwise the pivot itself orbits around
+      // the scene origin and the model drifts out of frame as it rotates.
       const fittedRoot = new THREE.Group();
-      fittedRoot.add(source);
-      // Offset the wrapper in its own parent space. Do not rewrite the
-      // Blender root transform: it contains the model's real orientation/scale.
-      fittedRoot.position.copy(centre).multiplyScalar(-fitScale);
+      fittedRoot.position.set(0, 0, 0);
       fittedRoot.scale.setScalar(fitScale);
-      modelBasePosition.copy(fittedRoot.position);
+
+      const centeredContent = new THREE.Group();
+      centeredContent.position.copy(centre).multiplyScalar(-1);
+      centeredContent.add(source);
+      fittedRoot.add(centeredContent);
+
+      modelBasePosition.set(0, 0, 0);
       modelFitScale = fitScale;
       modelRoot = fittedRoot;
       objectGroup.add(modelRoot);
@@ -254,6 +263,7 @@ export function initModel(container, options = {}) {
       container.classList.remove('model-loading', 'model-error');
       container.classList.add('model-ready');
       container.dataset.modelLoaded = 'true';
+      container.dataset.modelState = 'ready';
     },
     (event) => {
       if (event.total > 0) {

@@ -1,34 +1,35 @@
 # RAVS Motion
 
-RAVS Motion is an interactive web-motion showcase by RAVS-DEV, inspired by the presentation and playground style of Anime.js. The page is built around the actual Blender-exported Google G model in `assets/models/google.glb`.
+An Anime.js-inspired JavaScript motion showcase by RAVS-DEV, built around the original Google G Blender model in `assets/models/google.glb`.
 
-## Highlights
+## Scroll-driven experience
 
-- Anime.js v4 JavaScript motion sequences, scroll reveals, hover response, stagger and easing playground.
-- Two live Three.js scenes loading the exact repository GLB with GLTFLoader.
-- Automatic model bounds measurement and camera framing.
-- Preserved Blender transform hierarchy and original four coloured meshes.
-- Drag-to-rotate, pointer parallax, automatic turntable motion and scroll-driven rotation.
-- Studio lights, display pedestal, orbit rings and floating particles.
-- Responsive page and reduced-motion support.
+The central 3D scene stays pinned for a five-chapter scroll sequence. As the page moves, the chapter copy and progress rail change while the Google G model rotates, shifts in depth, scales, and changes camera perspective in real time.
+
+## Features
+
+- Anime.js v4 for intro choreography, stagger, hover responses, easing and chapter transitions.
+- Three.js + GLTFLoader loading the exact repository `google.glb`.
+- Runtime bounds fitting while retaining the Blender model's original child/root transforms and materials.
+- Pinned 3D scroll story with five chapters.
+- Scroll-linked 3D rotation, position, scale, camera and lighting changes.
+- Pointer drag-to-rotate, pointer parallax, orbit rings and floating particles.
+- Responsive layout and prefers-reduced-motion support.
 
 ## Run locally
 
-Use an HTTP server because the application loads ES modules and the GLB asset:
+Serve over HTTP for JavaScript modules and GLB loading:
 
 ```bash
 python -m http.server 8000
 ```
 
-Open http://localhost:8000.
+Then open http://localhost:8000.
 
-## 3D asset
+## Main files
 
-The viewer loads `assets/models/google.glb` directly. The Blender root transform is kept intact. The viewer calculates the mesh bounds at runtime and applies centering and fit scale through a parent group, so the source model is not modified.
-
-## Stack
-
-- Anime.js v4 — web motion and interaction.
-- Three.js — real-time 3D renderer.
-- GLTFLoader — binary GLB model loading.
-- Vanilla JavaScript modules, HTML and CSS.
+- `index.html` — page structure and scroll story chapters.
+- `assets/css/style.css` — layout, pinned scene and visual styling.
+- `assets/js/main.js` — Anime.js interactions and scroll chapter controller.
+- `assets/js/model.js` — Three.js GLB viewer and scroll-driven transform choreography.
+- `assets/models/google.glb` — original Blender model.

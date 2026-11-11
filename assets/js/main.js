@@ -222,6 +222,7 @@ const springRange = $('#springRange');
 let springDragging = false;
 let springStartX = 0;
 let springBaseX = 0;
+let springCurrentX = 0;
 
 function setSpringX(value, duration = 0) {
   if (reducedMotion) {
@@ -245,17 +246,21 @@ springObject.addEventListener('pointermove', (event) => {
   if (!springDragging) return;
   const limit = Math.max(0, (springStage.clientWidth - springObject.offsetWidth) / 2 - 20);
   const next = clamp(springBaseX + event.clientX - springStartX, -limit, limit);
+  springCurrentX = next;
   springObject.style.transform = `translateX(${next}px)`;
 });
 function releaseSpring() {
   if (!springDragging) return;
   springDragging = false;
-  springObject.style.transform = '';
   animate(springObject, {
-    translateX: [springBaseX, 0],
+    translateX: [springCurrentX, 0],
     rotate: ['8deg', '0deg'],
     duration: 900,
-    ease: 'outElastic(1, .48)'
+    ease: 'outElastic(1, .48)',
+    onComplete: () => {
+      springCurrentX = 0;
+      springObject.style.transform = '';
+    }
   });
 }
 springObject.addEventListener('pointerup', releaseSpring);

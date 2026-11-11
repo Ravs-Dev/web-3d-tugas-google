@@ -758,7 +758,7 @@ body{background:#252423;color:#f6f4f2}
   align-items:flex-start;
   justify-content:center;
   opacity:0;
-  visibility:hidden;
+  visibility:visible;
   pointer-events:none;
 }
 .story-panel.is-active{

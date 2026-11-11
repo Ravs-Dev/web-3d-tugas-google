@@ -46,7 +46,10 @@ button{cursor:pointer}
 .live-dot{display:block;width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px #ff514d20,0 0 15px var(--red)}
 .scene-model{position:absolute;z-index:3;left:50%;top:51%;width:min(49vw,720px);height:min(82vh,790px);transform:translate(-50%,-50%);cursor:grab;touch-action:pan-y}
 .scene-model:active{cursor:grabbing}
-.scene-model canvas{display:block;width:100%;height:100%;outline:none}
+.scene-model #heroModel{position:absolute;inset:0;width:100%;height:100%;min-width:1px;min-height:1px}
+.scene-model #heroModel canvas{display:block;width:100%;height:100%;outline:none}
+.scene-model #heroModel.model-loading:before{content:"LOADING GOOGLE.GLB";position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);padding:9px 12px;border:1px solid #ffffff27;background:#211f1ddd;color:#cfc7bf;font:8px var(--mono);letter-spacing:.13em;white-space:nowrap;pointer-events:none}
+.scene-model #heroModel.model-error:after{content:"3D MODEL FAILED TO LOAD";position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);padding:10px 12px;border:1px solid #ff514d66;background:#211f1d;color:#ffc7c2;font:8px var(--mono);white-space:nowrap}
 .scene-model.model-loading:before{content:"LOADING GOOGLE.GLB";position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);padding:9px 12px;border:1px solid #ffffff27;background:#211f1ddd;color:#cfc7bf;font:8px var(--mono);letter-spacing:.13em;white-space:nowrap;pointer-events:none}
 .scene-model.model-error:after{content:"3D MODEL FAILED TO LOAD";position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);padding:10px 12px;border:1px solid #ff514d66;background:#211f1d;color:#ffc7c2;font:8px var(--mono);white-space:nowrap}
 .scene-orbit{position:absolute;z-index:1;left:50%;top:51%;border:1px solid #ffffff20;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}

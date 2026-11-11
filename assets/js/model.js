@@ -310,9 +310,31 @@ export function initModel(container, options = {}) {
       currentRotation.x += (targetRotation.x - currentRotation.x) * 0.06;
       currentRotation.y += (targetRotation.y - currentRotation.y) * 0.06;
 
-      modelRoot.rotation.x = currentRotation.x + scrollProgress * 0.13;
-      modelRoot.rotation.y = currentRotation.y + scrollProgress * 0.34;
-      modelRoot.position.y = Math.sin(now * 0.00085) * 0.045 - scrollProgress * 0.08;
+      // Scroll choreography: model transform changes continuously across
+      // the pinned story, with a distinct camera/scale beat at each chapter.
+      const wave = Math.sin(scrollProgress * Math.PI);
+      const turn = scrollProgress * Math.PI * 4;
+      const sideShift = Math.sin(scrollProgress * Math.PI * 2) * 0.48;
+      const depthBeat = Math.sin(scrollProgress * Math.PI * 2);
+      const scaleBeat = 1 + wave * 0.13 + Math.sin(scrollProgress * Math.PI * 4) * 0.035;
+
+      modelRoot.rotation.x = currentRotation.x + scrollProgress * Math.PI * 0.58;
+      modelRoot.rotation.y = currentRotation.y + turn;
+      modelRoot.rotation.z = Math.sin(scrollProgress * Math.PI * 2) * 0.11;
+      modelRoot.position.x = sideShift;
+      modelRoot.position.y = Math.sin(now * 0.00085) * 0.04 + Math.sin(scrollProgress * Math.PI * 2) * 0.12;
+      modelRoot.position.z = depthBeat * 0.12;
+      modelRoot.scale.setScalar(scaleBeat);
+
+      // The camera eases closer and then opens the full object back up.
+      camera.position.z = cameraDistance - wave * 0.62 + Math.sin(scrollProgress * Math.PI * 4) * 0.12;
+      camera.position.x = Math.sin(scrollProgress * Math.PI * 2) * 0.18;
+      camera.lookAt(0, -0.06 + Math.sin(scrollProgress * Math.PI * 2) * 0.06, 0);
+
+      frontLight.intensity = (dark ? 22 : 22) + wave * 16;
+      fillLight.intensity = 2.2 + (1 - wave) * 0.8;
+      ringA.rotation.y = 0.38 + scrollProgress * Math.PI * 2;
+      ringB.rotation.x = -0.58 - scrollProgress * Math.PI * 1.5;
     }
 
     orbit.rotation.y += delta * 0.055;

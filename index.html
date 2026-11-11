@@ -9,14 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-      }
-    }
-  </script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
@@ -55,7 +48,29 @@
           <div class="scene-object-label label-top">BLENDER MODEL <span>↗</span></div>
           <div class="scene-object-label label-bottom">GOOGLE G / INTERACTIVE 3D</div>
           <div class="scene-model" id="heroVisual">
-            <div class="model-loading" id="heroModel"></div>
+            <model-viewer
+              class="google-model model-loading"
+              id="heroModel"
+              src="./assets/models/google.glb"
+              alt="Four-colour Google G 3D model"
+              camera-controls
+              camera-orbit="0deg 75deg auto"
+              camera-target="auto auto auto"
+              field-of-view="auto"
+              min-camera-orbit="auto 10deg 45%"
+              max-camera-orbit="auto 170deg 300%"
+              interaction-prompt="none"
+              touch-action="pan-y"
+              shadow-intensity="0.72"
+              shadow-softness="0.9"
+              exposure="1.18"
+              environment-image="neutral"
+              tone-mapping="aces"
+              loading="eager"
+              reveal="auto"
+              disable-pan
+              interpolation-decay="180">
+            </model-viewer>
           </div>
           <div class="scene-coordinates">X <span id="coordX">00.24</span><br>Y <span id="coordY">01.08</span><br>Z <span id="coordZ">00.62</span></div>
 

@@ -56,11 +56,54 @@ let detailModel = null;
 function updateModelScrollMotion() {
   const clamp01 = (value) => Math.max(0, Math.min(1, value));
   const heroRect = $('#heroVisual').getBoundingClientRect();
-  const detailRect = $('#threeDStage').getBoundingClientRect();
   const heroProgress = clamp01((window.innerHeight - heroRect.top) / (window.innerHeight + heroRect.height));
-  const detailProgress = clamp01((window.innerHeight - detailRect.top) / (window.innerHeight + detailRect.height));
   heroModel?.setScrollProgress(heroProgress);
-  detailModel?.setScrollProgress(detailProgress);
+
+  const track = $('#scrollTrack');
+  if (!track) return;
+  const trackTop = track.getBoundingClientRect().top + window.scrollY;
+  const trackDistance = Math.max(1, track.offsetHeight - window.innerHeight);
+  const sceneProgress = clamp01((window.scrollY - trackTop) / trackDistance);
+  detailModel?.setScrollProgress(sceneProgress);
+  updateStoryChapter(sceneProgress);
+}
+
+// Scroll chapters: the copy and progress rail change while the 3D scene stays pinned.
+let currentStoryChapter = 0;
+const storyPanels = $$('.story-panel');
+const storySteps = $$('[data-progress-step]');
+const storyProgressValue = $('#storyProgressValue');
+const storyProgressFill = $('#storyProgressFill');
+
+function updateStoryChapter(progress) {
+  const chapter = Math.min(storyPanels.length - 1, Math.floor(progress * storyPanels.length));
+  if (storyProgressFill) storyProgressFill.style.transform = 'scaleX(' + progress + ')';
+  if (storyProgressValue) {
+    storyProgressValue.innerHTML = String(chapter + 1).padStart(2, '0') + ' <i>/ ' + String(storyPanels.length).padStart(2, '0') + '</i>';
+  }
+  storySteps.forEach((step, index) => step.classList.toggle('is-active', index <= chapter));
+  if (chapter === currentStoryChapter) return;
+
+  const previous = storyPanels[currentStoryChapter];
+  const next = storyPanels[chapter];
+  if (previous) {
+    previous.classList.remove('is-active');
+    previous.setAttribute('aria-hidden', 'true');
+    if (!prefersReducedMotion) {
+      animate(previous, { opacity: 0, translateY: -22, duration: 260, ease: 'in(3)' });
+    }
+  }
+  currentStoryChapter = chapter;
+  if (next) {
+    next.classList.add('is-active');
+    next.setAttribute('aria-hidden', 'false');
+    if (prefersReducedMotion) {
+      next.style.opacity = 1;
+      next.style.transform = 'none';
+    } else {
+      animate(next, { opacity: [0, 1], translateY: [34, 0], duration: 620, ease: 'out(4)' });
+    }
+  }
 }
 window.addEventListener('scroll', () => {
   if (scrollTicking) return;
@@ -150,7 +193,10 @@ $('#easePlay').addEventListener('click', () => {
   });
   easingAnimation.then(() => { easeSlider.value = 100; });
 });
-window.addEventListener('resize', () => setEasePosition(easeSlider.value));
+window.addEventListener('resize', () => {
+  setEasePosition(easeSlider.value);
+  updateModelScrollMotion();
+});
 
 // Subtle feature-card reactions.
 $$('.feature-card').forEach((card) => {

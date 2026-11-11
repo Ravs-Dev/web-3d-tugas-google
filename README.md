@@ -1,35 +1,33 @@
 # RAVS Motion
 
-An Anime.js-inspired JavaScript motion showcase by RAVS-DEV, built around the original Google G Blender model in `assets/models/google.glb`.
+A JavaScript animation playground by RAVS-DEV, inspired by the layout and interactive motion showcases of Anime.js. The page is built around the original Google G Blender export at `assets/models/google.glb`.
 
-## Scroll-driven experience
+## Experience
 
-The central 3D scene stays pinned for a five-chapter scroll sequence. As the page moves, the chapter copy and progress rail change while the Google G model rotates, shifts in depth, scales, and changes camera perspective in real time.
-
-## Features
-
-- Anime.js v4 for intro choreography, stagger, hover responses, easing and chapter transitions.
-- Three.js + GLTFLoader loading the exact repository `google.glb`.
-- Runtime bounds fitting while retaining the Blender model's original child/root transforms and materials.
-- Pinned 3D scroll story with five chapters.
-- Scroll-linked 3D rotation, position, scale, camera and lighting changes.
-- Pointer drag-to-rotate, pointer parallax, orbit rings and floating particles.
-- Responsive layout and prefers-reduced-motion support.
+- A fixed, central Three.js scene stays on screen while the page scrolls through seven chapters.
+- The Google G rotates, shifts, scales and changes camera perspective based on scroll progress.
+- Left-side chapter copy and right-side interactive demos transition as the scroll advances.
+- Seven demo chapters: introduction, WAAPI-style animation, timeline, stagger, SVG path, spring/drag, and scroll progress.
+- A toolbox list lets visitors jump directly to a selected chapter.
+- Anime.js v4 powers intro choreography, chapter transitions and interactive demos.
+- Three.js + GLTFLoader load the exact binary GLB file from the repository.
+- Runtime geometry fitting, studio lights, pedestal, orbit rings and particles.
+- Responsive layout, mobile navigation and reduced-motion support.
 
 ## Run locally
 
-Serve over HTTP for JavaScript modules and GLB loading:
+Use an HTTP server because the site uses ES modules and loads the GLB through fetch:
 
 ```bash
 python -m http.server 8000
 ```
 
-Then open http://localhost:8000.
+Open http://localhost:8000.
 
 ## Main files
 
-- `index.html` — page structure and scroll story chapters.
-- `assets/css/style.css` — layout, pinned scene and visual styling.
-- `assets/js/main.js` — Anime.js interactions and scroll chapter controller.
-- `assets/js/model.js` — Three.js GLB viewer and scroll-driven transform choreography.
-- `assets/models/google.glb` — original Blender model.
+- `index.html` — pinned scroll experience, demo chapters and toolbox list.
+- `assets/css/style.css` — fixed scene layout, responsive design and motion demos.
+- `assets/js/main.js` — Anime.js animations, scroll chapter controller and interactive demos.
+- `assets/js/model.js` — Three.js scene, GLB loader and scroll-controlled 3D choreography.
+- `assets/models/google.glb` — original Google G model exported from Blender.

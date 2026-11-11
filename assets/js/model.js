@@ -18,6 +18,7 @@ export function initModel(container, options = {}) {
   let modelRoot = null;
   let modelBasePosition = new THREE.Vector3();
   let modelFitScale = 1;
+  let fittedCameraDistance = cameraDistance;
   let frameId = 0;
   let pointerDown = false;
   let pointerInside = false;
@@ -244,8 +245,11 @@ export function initModel(container, options = {}) {
       // Fit camera to the visible object and stage, rather than assuming
       // that Blender exported the model around the origin at unit scale.
       const verticalFov = THREE.MathUtils.degToRad(camera.fov);
-      const distanceForModel = (radius + 0.18) / Math.sin(verticalFov / 2);
-      camera.position.z = Math.max(cameraDistance, distanceForModel * 0.92);
+      // Reserve room for the largest scroll-driven scale peak so the Google
+      // model never gets clipped when the camera moves closer.
+      const distanceForModel = (radius * 1.2 + 0.16) / Math.sin(verticalFov / 2);
+      fittedCameraDistance = Math.max(cameraDistance, distanceForModel);
+      camera.position.z = fittedCameraDistance;
       camera.lookAt(0, -0.08, 0);
       container.classList.remove('model-loading', 'model-error');
       container.classList.add('model-ready');
@@ -331,7 +335,7 @@ export function initModel(container, options = {}) {
       modelRoot.scale.setScalar(modelFitScale * scaleBeat);
 
       // The camera eases closer and then opens the full object back up.
-      camera.position.z = cameraDistance - wave * 0.62 + Math.sin(scrollProgress * Math.PI * 4) * 0.12;
+      camera.position.z = fittedCameraDistance - wave * 0.42 + Math.sin(scrollProgress * Math.PI * 4) * 0.08;
       camera.position.x = Math.sin(scrollProgress * Math.PI * 2) * 0.18;
       camera.lookAt(0, -0.06 + Math.sin(scrollProgress * Math.PI * 2) * 0.06, 0);
 

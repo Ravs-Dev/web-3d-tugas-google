@@ -5,29 +5,26 @@ export function initModel(viewer, options = {}) {
 
   const { exposure = 1.18 } = options;
   let disposed = false;
+  let wired = false;
   let ready = false;
   let progress = 0;
   let baseOrbit = { theta: 0, phi: Math.PI * 75 / 180, radius: 2.8 };
   let baseFieldOfView = 45;
   let lastAppliedProgress = -1;
-
-  // Keep the source URL explicit so the viewer uses the original GLB file.
-  viewer.src = MODEL_URL;
-  viewer.cameraControls = true;
-  viewer.interactionPrompt = 'none';
-  viewer.cameraTarget = 'auto auto auto';
-  viewer.cameraOrbit = '0deg 75deg auto';
-  viewer.fieldOfView = 'auto';
-  viewer.exposure = exposure;
-  viewer.environmentImage = 'neutral';
-  viewer.shadowIntensity = 0.72;
-  viewer.shadowSoftness = 0.9;
-  viewer.toneMapping = 'aces';
-  viewer.touchAction = 'pan-y';
-  viewer.interpolationDecay = 180;
+  let componentTimeout = 0;
 
   viewer.classList.add('model-loading');
   viewer.dataset.modelState = 'loading';
+
+  function showError(message, event) {
+    if (disposed) return;
+    console.error('Google GLB viewer error:', message, event || '');
+    viewer.classList.remove('model-loading');
+    viewer.classList.add('model-error');
+    viewer.dataset.modelState = 'error';
+    viewer.dataset.modelError = 'true';
+    viewer.dataset.modelErrorMessage = String(message);
+  }
 
   function applyScroll(value) {
     if (disposed || !ready) return;
@@ -35,8 +32,6 @@ export function initModel(viewer, options = {}) {
     if (Math.abs(p - lastAppliedProgress) < 0.001) return;
     lastAppliedProgress = p;
 
-    // Two full camera orbits across the pinned scroll story, with gentle
-    // zoom and tilt beats. model-viewer keeps its own mouse/touch controls.
     const wave = Math.sin(p * Math.PI);
     const theta = baseOrbit.theta + p * Math.PI * 4 + Math.sin(p * Math.PI * 2) * 0.1;
     const phi = Math.max(0.3, Math.min(2.7, baseOrbit.phi + Math.sin(p * Math.PI * 2) * 0.12));
@@ -78,23 +73,49 @@ export function initModel(viewer, options = {}) {
   }
 
   function onError(event) {
-    if (disposed) return;
-    const source = event?.detail?.sourceURL || MODEL_URL;
-    const message = 'Browser could not load or decode ' + source;
-    console.error('Google GLB failed to load:', event);
-    viewer.classList.remove('model-loading');
-    viewer.classList.add('model-error');
-    viewer.dataset.modelState = 'error';
-    viewer.dataset.modelError = 'true';
-    viewer.dataset.modelErrorMessage = message;
+    const type = event?.detail?.type || 'loadfailure';
+    showError(`Could not load the original GLB (${type}): ${MODEL_URL}`, event);
   }
 
-  viewer.addEventListener('load', onLoad);
-  viewer.addEventListener('progress', onProgress);
-  viewer.addEventListener('error', onError);
+  function connectViewer() {
+    if (disposed || wired) return;
+    const ViewerClass = customElements.get('model-viewer');
+    if (!ViewerClass) return;
 
-  // The web component can finish downloading before main.js binds listeners.
-  if (viewer.loaded) requestAnimationFrame(onLoad);
+    wired = true;
+    clearTimeout(componentTimeout);
+
+    // Wait until the custom element is upgraded before assigning properties.
+    viewer.cameraControls = true;
+    viewer.interactionPrompt = 'none';
+    viewer.cameraTarget = 'auto auto auto';
+    viewer.cameraOrbit = '0deg 75deg auto';
+    viewer.fieldOfView = 'auto';
+    viewer.exposure = exposure;
+    viewer.environmentImage = 'neutral';
+    viewer.shadowIntensity = 0.72;
+    viewer.shadowSoftness = 0.9;
+    viewer.toneMapping = 'aces';
+    viewer.touchAction = 'pan-y';
+    viewer.interpolationDecay = 180;
+
+    viewer.addEventListener('load', onLoad);
+    viewer.addEventListener('progress', onProgress);
+    viewer.addEventListener('error', onError);
+
+    // The HTML already points at this exact file. Only set it when missing.
+    if (!viewer.getAttribute('src')) viewer.src = MODEL_URL;
+    if (viewer.loaded) requestAnimationFrame(onLoad);
+  }
+
+  if (customElements.get('model-viewer')) {
+    connectViewer();
+  } else {
+    customElements.whenDefined('model-viewer').then(connectViewer);
+    componentTimeout = window.setTimeout(() => {
+      if (!wired) showError('The Google model-viewer component did not finish loading from the CDN.');
+    }, 12000);
+  }
 
   function setScrollProgress(value) {
     progress = Math.max(0, Math.min(1, value));
@@ -103,6 +124,7 @@ export function initModel(viewer, options = {}) {
 
   function dispose() {
     disposed = true;
+    clearTimeout(componentTimeout);
     viewer.removeEventListener('load', onLoad);
     viewer.removeEventListener('progress', onProgress);
     viewer.removeEventListener('error', onError);

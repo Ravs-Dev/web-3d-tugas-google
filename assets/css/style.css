@@ -575,3 +575,352 @@ body{background:#252423;color:#f6f4f2}
  .header-actions{gap:12px}
  .github-link{display:none}
 }
+
+
+/* ==========================================================
+   PINNED SCROLL STORY — Anime.js-style scroll choreography
+   Google GLB stays in the centre while the story changes.
+========================================================== */
+.scroll-experience{
+  position:relative;
+  isolation:isolate;
+  background:#171615;
+  color:#f6f4f2;
+}
+.scroll-track{
+  position:relative;
+  height:500vh;
+  min-height:2500px;
+}
+.scroll-sticky{
+  position:sticky;
+  top:0;
+  width:100%;
+  height:100vh;
+  height:100svh;
+  min-height:620px;
+  overflow:hidden;
+  isolation:isolate;
+  background:#171615;
+  color:#f6f4f2;
+  transition:background-color .55s ease;
+}
+.scroll-world-grid{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  opacity:.26;
+  background-image:
+    linear-gradient(#ffffff0b 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff0b 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 60% 48%,#000 0%,#0008 44%,transparent 78%);
+  transform:perspective(600px) rotateX(5deg) scale(1.1);
+}
+.scroll-world-glow{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(ellipse at 61% 48%,#ff4b4b20 0%,transparent 34%),
+    radial-gradient(ellipse at 58% 62%,#ff7d3611 0%,transparent 48%);
+  transition:background .6s ease;
+}
+.scroll-sticky[data-chapter="1"] .scroll-world-glow{
+  background:radial-gradient(ellipse at 61% 48%,#ff7d3626 0%,transparent 39%);
+}
+.scroll-sticky[data-chapter="2"] .scroll-world-glow{
+  background:radial-gradient(ellipse at 61% 48%,#a369ff27 0%,transparent 43%);
+}
+.scroll-sticky[data-chapter="3"] .scroll-world-glow{
+  background:radial-gradient(ellipse at 61% 48%,#33b3f122 0%,transparent 43%);
+}
+.scroll-sticky[data-chapter="4"] .scroll-world-glow{
+  background:radial-gradient(ellipse at 61% 48%,#00ffaa1c 0%,transparent 43%);
+}
+.scroll-sticky[data-chapter="5"] .scroll-world-glow{
+  background:radial-gradient(ellipse at 61% 48%,#ffcc2a22 0%,transparent 43%);
+}
+.scroll-topline{
+  position:absolute;
+  z-index:12;
+  top:0;
+  left:0;
+  width:100%;
+  height:68px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 clamp(22px,5vw,78px);
+  border-bottom:1px solid #ffffff19;
+  color:#a8a19a;
+  font:8px var(--mono);
+  letter-spacing:.16em;
+}
+.scroll-topline>span{display:flex;align-items:center;gap:10px}
+.scroll-topline b{color:#f6f4f2;font-weight:400}
+.scroll-live-dot{
+  display:inline-block;
+  width:6px;height:6px;border-radius:50%;
+  background:#ff4b4b;
+  box-shadow:0 0 0 5px #ff4b4b1e,0 0 14px #ff4b4b;
+}
+.story-canvas-wrap{
+  position:absolute;
+  z-index:2;
+  left:29%;
+  top:7%;
+  width:68%;
+  height:86%;
+  pointer-events:auto;
+}
+.story-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  cursor:grab;
+  touch-action:pan-y;
+}
+.story-canvas:active{cursor:grabbing}
+.story-canvas canvas{
+  display:block;
+  width:100%;
+  height:100%;
+}
+.scroll-object-halo{
+  position:absolute;
+  z-index:0;
+  left:63%;
+  top:49%;
+  width:min(52vw,680px);
+  aspect-ratio:1;
+  border:1px solid #ffffff18;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.halo-one{width:min(47vw,590px);transform:translate(-50%,-50%) rotateX(66deg) rotate(-15deg)}
+.halo-two{width:min(59vw,760px);border-style:dashed;opacity:.52;transform:translate(-50%,-50%) rotateY(67deg) rotate(20deg)}
+.scroll-object-label{
+  position:absolute;
+  z-index:8;
+  font:8px var(--mono);
+  letter-spacing:.15em;
+  color:#c0b7ae;
+  border:1px solid #ffffff26;
+  background:#252423c7;
+  padding:9px 12px;
+  pointer-events:none;
+}
+.scroll-object-label span{color:#ff4b4b;margin-left:9px}
+.label-top{top:17%;right:10%}
+.label-bottom{bottom:18%;right:9%;color:#918a83}
+.scroll-model-shadow{
+  position:absolute;
+  z-index:1;
+  left:63%;
+  bottom:15%;
+  width:min(30vw,370px);
+  height:36px;
+  border-radius:50%;
+  background:#000;
+  filter:blur(32px);
+  opacity:.65;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+.scroll-object-coordinates{
+  position:absolute;
+  right:4.8%;
+  top:43%;
+  z-index:7;
+  color:#77716c;
+  font:8px/2 var(--mono);
+  letter-spacing:.12em;
+  pointer-events:none;
+}
+.story-copy{
+  position:absolute;
+  z-index:11;
+  left:clamp(24px,7vw,108px);
+  top:50%;
+  width:min(330px,27vw);
+  height:360px;
+  transform:translateY(-45%);
+  pointer-events:none;
+}
+.story-panel{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+.story-panel.is-active{
+  opacity:1;
+  visibility:visible;
+}
+.story-index{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:25px;
+  color:#aaa19a;
+  font:8px var(--mono);
+  letter-spacing:.17em;
+}
+.story-index i{
+  display:block;width:25px;height:1px;background:#ff4b4b;
+}
+.story-panel h2{
+  margin:0;
+  max-width:440px;
+  color:#f6f4f2;
+  font-size:clamp(38px,4.6vw,68px);
+  font-weight:800;
+  line-height:.98;
+  letter-spacing:-.085em;
+}
+.story-panel h2 em{
+  color:#ff4b4b;
+  font-style:normal;
+}
+.story-panel p{
+  max-width:340px;
+  margin:23px 0 0;
+  color:#aaa39c;
+  font-size:11px;
+  line-height:1.9;
+}
+.story-code{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:28px;
+  padding-top:14px;
+  width:100%;
+  border-top:1px solid #ffffff28;
+}
+.story-code>span{
+  color:#8a827b;
+  font:7px var(--mono);
+  letter-spacing:.15em;
+}
+.story-code code{
+  color:#e6ded6;
+  font:10px var(--mono);
+}
+.story-code code b{color:#ff4b4b;font-weight:400}
+.story-progress{
+  position:absolute;
+  z-index:12;
+  left:clamp(24px,7vw,108px);
+  right:clamp(24px,7vw,108px);
+  bottom:58px;
+  pointer-events:none;
+}
+.story-progress-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+  color:#8e8780;
+  font:7px var(--mono);
+  letter-spacing:.16em;
+}
+.story-progress-heading strong{
+  color:#f6f4f2;
+  font:10px var(--mono);
+}
+.story-progress-heading strong i{color:#817a73;font-style:normal}
+.story-progress-rail{
+  width:100%;
+  height:1px;
+  background:#ffffff30;
+  overflow:hidden;
+}
+.story-progress-rail span{
+  display:block;
+  width:100%;
+  height:100%;
+  background:#ff4b4b;
+  transform:scaleX(0);
+  transform-origin:left center;
+  will-change:transform;
+}
+.story-progress-steps{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  color:#726b65;
+  font:7px var(--mono);
+}
+.story-progress-steps span{transition:color .25s}
+.story-progress-steps span.is-active{color:#ff4b4b}
+.scroll-bottom-note{
+  position:absolute;
+  z-index:12;
+  right:clamp(24px,5vw,78px);
+  bottom:19px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#77716c;
+  font:7px var(--mono);
+  letter-spacing:.15em;
+}
+.scroll-bottom-note i{color:#ff4b4b;font-style:normal;font-size:12px}
+.scroll-sticky[data-chapter="2"] .story-index i,
+.scroll-sticky[data-chapter="2"] .story-progress-rail span{background:#a369ff}
+.scroll-sticky[data-chapter="3"] .story-index i,
+.scroll-sticky[data-chapter="3"] .story-progress-rail span{background:#33b3f1}
+.scroll-sticky[data-chapter="4"] .story-index i,
+.scroll-sticky[data-chapter="4"] .story-progress-rail span{background:#00c68b}
+.scroll-sticky[data-chapter="5"] .story-index i,
+.scroll-sticky[data-chapter="5"] .story-progress-rail span{background:#ffcc2a}
+@media(max-width:900px){
+  .scroll-track{height:500vh;min-height:2400px}
+  .scroll-sticky{min-height:560px}
+  .story-canvas-wrap{left:19%;top:10%;width:80%;height:72%}
+  .scroll-object-halo{left:61%;top:43%;width:66vw}
+  .halo-one{width:58vw}.halo-two{width:72vw}
+  .scroll-model-shadow{left:61%;bottom:24%}
+  .story-copy{left:5vw;top:56%;width:38vw;height:285px;transform:translateY(-50%)}
+  .story-panel h2{font-size:clamp(34px,5.5vw,54px)}
+  .story-panel p{font-size:10px}
+  .story-progress{left:5vw;right:5vw;bottom:55px}
+  .scroll-object-coordinates{display:none}
+  .label-top{top:19%;right:5%}.label-bottom{bottom:25%;right:4%}
+}
+@media(max-width:600px){
+  .scroll-track{height:460vh;min-height:2150px}
+  .scroll-sticky{min-height:560px}
+  .scroll-topline{height:54px;padding:0 17px;font-size:6px;letter-spacing:.1em}
+  .scroll-topline>span:last-child{gap:5px}
+  .story-canvas-wrap{left:4%;top:8%;width:94%;height:53%}
+  .scroll-object-halo{left:54%;top:33%;width:78vw}
+  .halo-one{width:69vw}.halo-two{width:88vw}
+  .scroll-model-shadow{left:54%;bottom:42%;width:55vw}
+  .story-copy{left:22px;right:22px;top:56%;width:auto;height:220px;transform:none}
+  .story-panel{justify-content:flex-start}
+  .story-index{margin-bottom:13px;font-size:7px}
+  .story-panel h2{font-size:clamp(35px,10vw,50px)}
+  .story-panel p{font-size:10px;max-width:310px;margin-top:12px}
+  .story-code{margin-top:14px;padding-top:9px;gap:5px;width:80%}
+  .story-code>span{font-size:6px}.story-code code{font-size:8px}
+  .story-progress{left:22px;right:22px;bottom:40px}
+  .story-progress-heading{margin-bottom:8px}
+  .scroll-bottom-note{right:20px;bottom:15px;font-size:6px}
+  .scroll-object-label{font-size:6px;padding:7px 9px}
+  .label-top{top:15%;right:5%}
+  .label-bottom{bottom:45%;right:4%}
+  .scroll-world-grid{background-size:42px 42px}
+}
+@media(prefers-reduced-motion:reduce){
+  .scroll-sticky,.scroll-world-glow,.story-progress-steps span{transition:none}
+}

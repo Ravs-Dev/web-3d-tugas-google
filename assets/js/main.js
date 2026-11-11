@@ -69,7 +69,7 @@ function updateModelScrollMotion() {
 }
 
 // Scroll chapters: the copy and progress rail change while the 3D scene stays pinned.
-let currentStoryChapter = 0;
+let currentStoryChapter = -1;
 const storyPanels = $$('.story-panel');
 const storySteps = $$('[data-progress-step]');
 const storyProgressValue = $('#storyProgressValue');
@@ -77,6 +77,8 @@ const storyProgressFill = $('#storyProgressFill');
 
 function updateStoryChapter(progress) {
   const chapter = Math.min(storyPanels.length - 1, Math.floor(progress * storyPanels.length));
+  const sticky = $('#scrollSticky');
+  if (sticky) sticky.dataset.chapter = String(chapter + 1);
   if (storyProgressFill) storyProgressFill.style.transform = 'scaleX(' + progress + ')';
   if (storyProgressValue) {
     storyProgressValue.innerHTML = String(chapter + 1).padStart(2, '0') + ' <i>/ ' + String(storyPanels.length).padStart(2, '0') + '</i>';
@@ -93,6 +95,7 @@ function updateStoryChapter(progress) {
       animate(previous, { opacity: 0, translateY: -22, duration: 260, ease: 'in(3)' });
     }
   }
+
   currentStoryChapter = chapter;
   if (next) {
     next.classList.add('is-active');

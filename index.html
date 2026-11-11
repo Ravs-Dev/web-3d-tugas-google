@@ -180,24 +180,68 @@
       </div>
     </section>
 
-    <section class="three-d-section" id="three-d">
-      <div class="three-d-noise"></div>
-      <div class="three-d-inner section-wrap">
-        <div class="three-d-copy reveal">
-          <div class="section-kicker section-kicker-light"><span>03 / 3D LAB</span><span class="kicker-line"></span><span>REAL MODEL / REAL TIME</span></div>
-          <span class="big-index">01</span>
-          <h2>A little<br><em>more depth.</em></h2>
-          <p>Meet the centrepiece: the original Google G model from Blender, loaded as GLB and rendered in real time. Drag to rotate and scroll to animate.</p>
-          <div class="three-d-tags"><span>BLENDER → GLB</span><span>THREE.JS</span><span>INTERACTIVE</span></div>
-          <a class="button button-light" href="#about">Explore the project <span>↘</span></a>
-        </div>
-        <div class="three-d-stage reveal" id="threeDStage">
-          <div class="three-d-ring ring-back"></div><div class="three-d-ring ring-front"></div>
-          <div class="three-d-canvas" id="detailModel"></div>
-          <div class="three-d-cross">✳</div>
-          <div class="three-d-corner corner-a">MODEL / GOOGLE G</div>
-          <div class="three-d-corner corner-b">360° INTERACTIVE VIEW</div>
-          <div class="three-d-number">G.</div>
+    <section class="scroll-experience" id="three-d">
+      <div class="scroll-track" id="scrollTrack">
+        <div class="scroll-sticky" id="scrollSticky" data-chapter="1">
+          <div class="scroll-world-grid"></div>
+          <div class="scroll-world-glow" id="scrollWorldGlow"></div>
+          <div class="scroll-topline">
+            <span><i class="scroll-live-dot"></i> RAVS MOTION / SCROLL ENGINE</span>
+            <span>REAL-TIME 3D OBJECT <b>GOOGLE G</b></span>
+          </div>
+          <div class="scroll-object-halo halo-one"></div>
+          <div class="scroll-object-halo halo-two"></div>
+          <div class="scroll-object-label label-top">BLENDER EXPORT <span>↗</span></div>
+          <div class="scroll-object-label label-bottom">DRAG THE MODEL / SCROLL THE PAGE</div>
+          <div class="scroll-model-shadow"></div>
+          <div class="story-canvas-wrap">
+            <div class="three-d-canvas story-canvas" id="detailModel"></div>
+          </div>
+          <div class="scroll-object-coordinates">X 000.24<br>Y 001.08<br>Z 000.62</div>
+          <div class="story-copy" aria-live="polite">
+            <article class="story-panel is-active" data-story="0" aria-hidden="false">
+              <span class="story-index">01 <i></i> INTRODUCTION</span>
+              <h2>One object.<br><em>Infinite motion.</em></h2>
+              <p>Meet the Google G. A real Blender model, brought into a living JavaScript experience.</p>
+              <div class="story-code"><span>SCENE / 001</span><code>google.glb <b>→</b> Three.js</code></div>
+            </article>
+            <article class="story-panel" data-story="1" aria-hidden="true">
+              <span class="story-index">02 <i></i> ROTATION</span>
+              <h2>Look at it<br><em>from every angle.</em></h2>
+              <p>As you scroll, the model rotates through the scene. Drag it with your pointer to explore it yourself.</p>
+              <div class="story-code"><span>TRANSFORM / ROTATE</span><code>rotateY <b>:</b> 360deg</code></div>
+            </article>
+            <article class="story-panel" data-story="2" aria-hidden="true">
+              <span class="story-index">03 <i></i> SCALE</span>
+              <h2>Change the<br><em>perspective.</em></h2>
+              <p>The camera moves closer and pulls back. The object breathes with the rhythm of the page.</p>
+              <div class="story-code"><span>TRANSFORM / SCALE</span><code>scale <b>:</b> 1.00 → 1.14</code></div>
+            </article>
+            <article class="story-panel" data-story="3" aria-hidden="true">
+              <span class="story-index">04 <i></i> DEPTH</span>
+              <h2>Motion has<br><em>another dimension.</em></h2>
+              <p>Floating particles, orbit paths and studio lighting move around the actual 3D geometry.</p>
+              <div class="story-code"><span>SCENE / PARTICLES</span><code>depth <b>:</b> enabled</code></div>
+            </article>
+            <article class="story-panel" data-story="4" aria-hidden="true">
+              <span class="story-index">05 <i></i> INTERACTION</span>
+              <h2>Scroll it.<br><em>Play with it.</em></h2>
+              <p>This is not a static render. The object reacts to scroll progress and pointer movement in real time.</p>
+              <div class="story-code"><span>INPUT / RESPONSE</span><code>pointer + scroll <b>→</b> motion</code></div>
+            </article>
+          </div>
+          <div class="story-progress">
+            <div class="story-progress-heading"><span>SCENE PROGRESS</span><strong id="storyProgressValue">01 <i>/ 05</i></strong></div>
+            <div class="story-progress-rail"><span id="storyProgressFill"></span></div>
+            <div class="story-progress-steps">
+              <span class="is-active" data-progress-step="0">01</span>
+              <span data-progress-step="1">02</span>
+              <span data-progress-step="2">03</span>
+              <span data-progress-step="3">04</span>
+              <span data-progress-step="4">05</span>
+            </div>
+          </div>
+          <div class="scroll-bottom-note"><span>SCROLL TO EXPLORE</span><i>↓</i><span>01 — 05</span></div>
         </div>
       </div>
     </section>

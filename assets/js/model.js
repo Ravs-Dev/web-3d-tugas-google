@@ -16,6 +16,8 @@ export function initModel(container, options = {}) {
 
   let disposed = false;
   let modelRoot = null;
+  let modelBasePosition = new THREE.Vector3();
+  let modelFitScale = 1;
   let frameId = 0;
   let pointerDown = false;
   let pointerInside = false;
@@ -219,6 +221,8 @@ export function initModel(container, options = {}) {
       // Blender root transform: it contains the model's real orientation/scale.
       fittedRoot.position.copy(centre).multiplyScalar(-fitScale);
       fittedRoot.scale.setScalar(fitScale);
+      modelBasePosition.copy(fittedRoot.position);
+      modelFitScale = fitScale;
       modelRoot = fittedRoot;
       objectGroup.add(modelRoot);
 
@@ -321,10 +325,10 @@ export function initModel(container, options = {}) {
       modelRoot.rotation.x = currentRotation.x + scrollProgress * Math.PI * 0.58;
       modelRoot.rotation.y = currentRotation.y + turn;
       modelRoot.rotation.z = Math.sin(scrollProgress * Math.PI * 2) * 0.11;
-      modelRoot.position.x = sideShift;
-      modelRoot.position.y = Math.sin(now * 0.00085) * 0.04 + Math.sin(scrollProgress * Math.PI * 2) * 0.12;
-      modelRoot.position.z = depthBeat * 0.12;
-      modelRoot.scale.setScalar(scaleBeat);
+      modelRoot.position.x = modelBasePosition.x + sideShift;
+      modelRoot.position.y = modelBasePosition.y + Math.sin(now * 0.00085) * 0.04 + Math.sin(scrollProgress * Math.PI * 2) * 0.12;
+      modelRoot.position.z = modelBasePosition.z + depthBeat * 0.12;
+      modelRoot.scale.setScalar(modelFitScale * scaleBeat);
 
       // The camera eases closer and then opens the full object back up.
       camera.position.z = cameraDistance - wave * 0.62 + Math.sin(scrollProgress * Math.PI * 4) * 0.12;

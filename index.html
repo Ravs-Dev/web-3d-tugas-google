@@ -24,10 +24,12 @@
     <li><a href="#pemimpin">Pemimpin</a></li>
     <li><a href="#galeri">Galeri</a></li>
     <li><a href="#produk">Produk</a></li>
+    <li><a href="#demo">Demo</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
 </header>
 <div class="stage" id="top">
+<div class="shapes" aria-hidden="true"><i class="sh circle"></i><i class="sh square"></i><i class="sh tri"></i><i class="sh pill"></i><i class="sh circle s2"></i><i class="sh square s2"></i></div>
 
 <section class="hero">
   <h1><span class="line"><span>Satu huruf,</span></span><span class="line"><span>empat warna.</span></span></h1>
@@ -155,6 +157,57 @@
   </div>
 </section>
 
+
+<section class="sec solid" id="demo">
+  <div class="wrap">
+    <h2>Fitur animasi</h2>
+    <p>Empat contoh kecil yang dibuat dengan Anime.js. Coba tekan tombol atau seret bolanya.</p>
+    <div class="grid demos">
+      <article class="card demo" id="demo-stagger">
+        <div class="mini grid5"></div>
+        <h3>Stagger</h3>
+        <small>Elemen bergerak berantai dari tengah ke luar.</small>
+        <button class="play" type="button">Mainkan</button>
+      </article>
+      <article class="card demo" id="demo-layers">
+        <div class="mini"><i class="box"></i></div>
+        <h3>Layered transform</h3>
+        <small>Beberapa transformasi berjalan bersamaan pada satu objek.</small>
+        <button class="play" type="button">Mainkan</button>
+      </article>
+      <article class="card demo" id="demo-controls">
+        <div class="mini ctl"><div class="bar"><i></i></div></div>
+        <h3>Controls</h3>
+        <small>Putar, jeda, atau mundurkan animasi.</small>
+        <div class="row">
+          <button class="play" data-act="play" type="button">Putar</button>
+          <button class="play" data-act="pause" type="button">Jeda</button>
+          <button class="play" data-act="reverse" type="button">Mundur</button>
+        </div>
+      </article>
+      <article class="card demo" id="demo-drag">
+        <div class="mini drag"><i class="ball"></i></div>
+        <h3>Draggable</h3>
+        <small>Seret bola dan lepaskan untuk melihat efek pegas.</small>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="sec solid" id="kode">
+  <div class="wrap">
+    <h2>Dari kode ke gerakan</h2>
+    <p>Anime.js mengubah nilai properti secara bertahap sehingga gerakan terasa lebih halus.</p>
+    <pre class="code"><code>anime({
+  targets: '.card',
+  translateY: [24, 0],
+  opacity: [0, 1],
+  delay: anime.stagger(90),
+  duration: 800,
+  easing: 'easeOutExpo'
+});</code></pre>
+  </div>
+</section>
+
 <section class="sec" id="faq">
   <div class="wrap split">
     <h2>Pertanyaan umum</h2>
@@ -189,5 +242,6 @@
 <script src="js/scene.js"></script>
 <script src="js/motion.js"></script>
 <script src="js/effects.js"></script>
+<script src="js/demos.js"></script>
 </body>
 </html>

@@ -107,3 +107,32 @@ details p{margin:12px 0 0}
 .swatch i{transform-origin:0 50%}
 .nav.scrolled{box-shadow:0 12px 30px -22px rgba(20,23,31,.4)}
 .nav a.on{opacity:1;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+
+
+/* Anime.js interaction and demo components */
+.btn, .cta, .play { transform: translate3d(var(--mag-x, 0px), var(--mag-y, 0px), 0); will-change: transform; }
+.btn, .cta, .play { position: relative; overflow: hidden; }
+.ripple { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: currentColor; pointer-events: none; transform: scale(0); }
+.shapes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.shapes .sh { position: absolute; display: block; border: 1px solid rgba(66,133,244,.18); animation: shapeFloat 9s ease-in-out infinite; }
+.shapes .circle { width: 54px; height: 54px; border-radius: 50%; left: 8%; top: 18%; }
+.shapes .square { width: 34px; height: 34px; right: 12%; top: 22%; transform: rotate(24deg); animation-delay: -2s; }
+.shapes .tri { width: 0; height: 0; left: 15%; bottom: 14%; border: 18px solid transparent; border-bottom-color: rgba(234,67,53,.22); animation-delay: -4s; }
+.shapes .pill { width: 76px; height: 28px; right: 18%; bottom: 16%; border-radius: 30px; animation-delay: -1s; }
+.shapes .s2 { opacity: .55; animation-duration: 12s; }
+@keyframes shapeFloat { 0%,100% { translate: 0 0; rotate: 0deg; } 50% { translate: 0 -18px; rotate: 12deg; } }
+.demos { align-items: stretch; }
+.demo { display: flex; flex-direction: column; gap: 12px; }
+.demo h3, .demo small { margin: 0; }
+.demo .play { align-self: flex-start; margin-top: auto; }
+.mini { min-height: 118px; display: grid; place-items: center; border-radius: 16px; background: #f2f5fa; overflow: hidden; position: relative; }
+.grid5 { grid-template-columns: repeat(5, 18px); grid-auto-rows: 18px; gap: 8px; align-content: center; justify-content: center; }
+.grid5 i { display: block; width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg,#4285F4,#34A853); }
+#demo-layers .box { width: 54px; height: 54px; border-radius: 12px; background: linear-gradient(135deg,#EA4335,#FBBC05); }
+.mini.ctl { padding: 24px; }
+.bar { width: 100%; height: 8px; border-radius: 10px; background: #dce3ee; overflow: hidden; }
+.bar i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#4285F4,#34A853); }
+.mini.drag { touch-action: none; }
+.ball { width: 38px; height: 38px; display: block; border-radius: 50%; background: radial-gradient(circle at 30% 30%,#fff,#4285F4 55%,#174ea6); cursor: grab; touch-action: none; }
+.ball:active { cursor: grabbing; }
+@media (prefers-reduced-motion: reduce) { .shapes .sh { animation: none !important; } }
